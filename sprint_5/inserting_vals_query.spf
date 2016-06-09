@@ -1,0 +1,835 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>ContentFilters</key>
+	<dict/>
+	<key>auto_connect</key>
+	<true/>
+	<key>data</key>
+	<dict>
+		<key>connection</key>
+		<dict>
+			<key>database</key>
+			<string>happyhomes</string>
+			<key>host</key>
+			<string>192.168.20.56</string>
+			<key>kcid</key>
+			<string>-4467411664959150475</string>
+			<key>name</key>
+			<string>192.168.20.56</string>
+			<key>port</key>
+			<integer>3306</integer>
+			<key>rdbms_type</key>
+			<string>mysql</string>
+			<key>sslCACertFileLocation</key>
+			<string></string>
+			<key>sslCACertFileLocationEnabled</key>
+			<integer>0</integer>
+			<key>sslCertificateFileLocation</key>
+			<string></string>
+			<key>sslCertificateFileLocationEnabled</key>
+			<integer>0</integer>
+			<key>sslKeyFileLocation</key>
+			<string></string>
+			<key>sslKeyFileLocationEnabled</key>
+			<integer>0</integer>
+			<key>type</key>
+			<string>SPTCPIPConnection</string>
+			<key>useSSL</key>
+			<integer>0</integer>
+			<key>user</key>
+			<string>root</string>
+		</dict>
+		<key>session</key>
+		<dict>
+			<key>connectionEncoding</key>
+			<string>latin1</string>
+			<key>contentPageNumber</key>
+			<integer>1</integer>
+			<key>contentSelection</key>
+			<data>
+			YnBsaXN0MDDUAQIDBAUGJCVYJHZlcnNpb25YJG9iamVjdHNZJGFy
+			Y2hpdmVyVCR0b3ASAAGGoKgHCBMUFRYaIVUkbnVsbNMJCgsMDxJX
+			TlMua2V5c1pOUy5vYmplY3RzViRjbGFzc6INDoACgAOiEBGABIAF
+			gAdUdHlwZVRyb3dzXxAdU2VsZWN0aW9uRGV0YWlsVHlwZU5TSW5k
+			ZXhTZXTSFwsYGVxOU1JhbmdlQ291bnQQAIAG0hscHR5aJGNsYXNz
+			bmFtZVgkY2xhc3Nlc1pOU0luZGV4U2V0oh8gWk5TSW5kZXhTZXRY
+			TlNPYmplY3TSGxwiI1xOU0RpY3Rpb25hcnmiIiBfEA9OU0tleWVk
+			QXJjaGl2ZXLRJidUZGF0YYABAAgAEQAaACMALQAyADcAQABGAE0A
+			VQBgAGcAagBsAG4AcQBzAHUAdwB8AIEAoQCmALMAtQC3ALwAxwDQ
+			ANsA3gDpAPIA9wEEAQcBGQEcASEAAAAAAAACAQAAAAAAAAAoAAAA
+			AAAAAAAAAAAAAAABIw==
+			</data>
+			<key>contentSortColIsAsc</key>
+			<true/>
+			<key>contentViewport</key>
+			<string>{{0, 0}, {1025, 564}}</string>
+			<key>isToolbarVisible</key>
+			<true/>
+			<key>queries</key>
+			<string>/* create database */
+DROP DATABASE IF EXISTS happyhomes;
+CREATE DATABASE IF NOT EXISTS happyhomes;
+​
+USE happyhomes;
+​
+CREATE TABLE RegionalOffice (
+  regionalOfficeID  INTEGER,
+  region VARCHAR(10) NOT NULL,
+  address VARCHAR(50) NOT NULL,
+  city VARCHAR(30) NOT NULL,
+  postcode VARCHAR(8) NOT NULL,
+  telNo VARCHAR(15) NOT NULL,
+  
+  CONSTRAINT pRegionalOffice PRIMARY KEY(regionalOfficeID),
+  CONSTRAINT cRegionalOfficeRegion CHECK (region IN ('North West','North East','Central','South West','South East'))
+);
+​
+CREATE TABLE LocalOffice (
+  localOfficeID INTEGER,
+  regionalOfficeID INTEGER NOT NULL,
+  address VARCHAR(50) NOT NULL,
+  city VARCHAR(30) NOT NULL,
+  postcode VARCHAR(8) NOT NULL,
+  telNo VARCHAR(15) NOT NULL,
+  
+  CONSTRAINT pLocalOffice PRIMARY KEY(localOfficeID),
+  CONSTRAINT fLocalOfficeRegion FOREIGN KEY(regionalOfficeID) REFERENCES RegionalOffice(regionalOfficeID)
+);
+​
+CREATE TABLE Staff (
+  staffID INTEGER,
+  fName VARCHAR(35) NOT NULL,
+  lName VARCHAR(35) NOT NULL,
+  address VARCHAR(50) NOT NULL,
+  city VARCHAR(30) NOT NULL,
+  postcode VARCHAR(8) NOT NULL,
+  contactTelNo VARCHAR(15) NOT NULL,
+  email VARCHAR(254) NOT NULL,
+  salary DECIMAL(9,2) NOT NULL,
+  
+  CONSTRAINT pStaff PRIMARY KEY(staffID)
+);
+​
+CREATE TABLE SiteManager (
+  siteManagerID INTEGER,
+  regionalOfficeID INTEGER NOT NULL,
+  businessTelNo VARCHAR(15) NOT NULL,
+  CONSTRAINT pSiteManager PRIMARY KEY(siteManagerID),
+  CONSTRAINT fSiteManagerStaff FOREIGN KEY(siteManagerID) REFERENCES Staff(staffID),
+  CONSTRAINT fSiteManagerOffice FOREIGN KEY(regionalOfficeID) REFERENCES RegionalOffice(regionalOfficeID)
+);
+​
+CREATE TABLE SalesAdvisor (
+  salesAdvisorID INTEGER,
+  localOfficeID INTEGER NOT NULL,
+  internalExtension VARCHAR(4) NOT NULL,
+  commisionRate DECIMAL(4,3) NOT NULL,
+  
+  CONSTRAINT pSalesAdvisor PRIMARY KEY(salesAdvisorID),
+  CONSTRAINT fSalesAdvisorStaff FOREIGN KEY(salesAdvisorID) REFERENCES Staff(staffID),
+  CONSTRAINT fSalesAdvisorOffice FOREIGN KEY(localOfficeID) REFERENCES LocalOffice(localOfficeID)
+);
+​
+CREATE TABLE Development (
+  developmentID INTEGER,
+  siteManagerID INTEGER NOT NULL,
+  dateStarted DATE NOT NULL,
+  dateFinished DATE,
+  CONSTRAINT pDevelopment PRIMARY KEY(developmentID),
+  CONSTRAINT fDevelopmentSiteMan FOREIGN KEY(siteManagerID) REFERENCES SiteManager(siteManagerID)
+);
+​
+
+​
+CREATE TABLE PropertyType (
+  propertyType VARCHAR(10),
+  bedroomNo INTEGER(2) NOT NULL,
+  receptionRoomNo INTEGER(2) NOT NULL,
+  bathroomNo INTEGER(2) NOT NULL,
+  ensuiteNo INTEGER(2) NOT NULL,
+  parkingAllocation VARCHAR(13) NOT NULL,
+  numberOfFloors INT(1) NOT NULL,
+  gardenSize INT(3) NOT NULL,
+  
+  CONSTRAINT pPropertyType PRIMARY KEY(propertyType),
+  CONSTRAINT cPropetyTypeParking CHECK (parkingAllocation IN ('single garage','double garage','parking space','carport'))
+);
+​
+​
+CREATE TABLE Property (
+  propertyID INTEGER,
+  developmentID INTEGER NOT NULL,
+  propertyType VARCHAR(10) NOT NULL,
+  plot INTEGER NOT NULL,
+  CONSTRAINT pProperty PRIMARY KEY(propertyID),
+  CONSTRAINT fPropertyDev FOREIGN KEY(developmentID) REFERENCES Development(developmentID),
+  CONSTRAINT fPropertyPType FOREIGN KEY(propertyType) REFERENCES PropertyType(propertyType)
+);
+​
+CREATE TABLE Customer (
+  customerID INTEGER,
+  fName VARCHAR(35) NOT NULL,
+  lName VARCHAR(35) NOT NULL,
+  address VARCHAR(50) NOT NULL,
+  city VARCHAR(30) NOT NULL,
+  postcode VARCHAR(8) NOT NULL,
+  telNo VARCHAR(15) NOT NULL,
+  email VARCHAR(254) NOT NULL,
+  
+  CONSTRAINT pCustomer PRIMARY KEY(customerID)
+);
+​
+CREATE TABLE Solicitor (
+  solicitorID INTEGER,
+  localOfficeID INTEGER NOT NULL,
+  fName VARCHAR(35) NOT NULL,
+  lName VARCHAR(35) NOT NULL,
+  address VARCHAR(50) NOT NULL,
+  city VARCHAR(30) NOT NULL,
+  postcode VARCHAR(8) NOT NULL,
+  telNo VARCHAR(15) NOT NULL,
+  email VARCHAR(254) NOT NULL,
+  
+  CONSTRAINT pSolicitor PRIMARY KEY(solicitorID),
+  CONSTRAINT fSolicitorOffice FOREIGN KEY(localOfficeID) REFERENCES LocalOffice(localOfficeID)
+);
+​
+CREATE TABLE Transaction (
+  transactionID INTEGER,
+  salesAdvisorID INTEGER NOT NULL,
+  customerID INTEGER NOT NULL,
+  propertyID INTEGER NOT NULL,
+  solicitorID INTEGER NOT NULL,
+  initialDate DATETIME NOT NULL,
+  finalisationDate DATETIME,
+  value DECIMAL(10,2),
+  solictorFee DECIMAL(10,2),
+  CONSTRAINT pTransaction PRIMARY KEY(transactionID),
+  CONSTRAINT fTransactionSalesAd  FOREIGN KEY(salesAdvisorID) REFERENCES SalesAdvisor(salesAdvisorID),
+  CONSTRAINT fTransactionCust FOREIGN KEY(customerID) REFERENCES Customer(customerID),
+  CONSTRAINT fTransactionProp FOREIGN KEY(propertyID) REFERENCES Property(propertyID),
+  CONSTRAINT fTransactionSolicitor  FOREIGN KEY(solicitorID) REFERENCES Solicitor(solicitorID)
+);
+​
+/* debug output */
+SHOW TABLES;</string>
+			<key>view</key>
+			<string>SP_VIEW_CUSTOMQUERY</string>
+			<key>windowVerticalDividerPosition</key>
+			<real>176</real>
+		</dict>
+	</dict>
+	<key>encrypted</key>
+	<false/>
+	<key>format</key>
+	<string>connection</string>
+	<key>queryFavorites</key>
+	<array/>
+	<key>queryHistory</key>
+	<array>
+		<string>CREATE TABLE `nh_session` (
+  `sess_id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'generic id',
+  `sess_date_last_update` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP COMMENT 'time of last update',
+  `sess_date_created` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT 'time of row creation',
+  `epis_id` int(11) unsigned DEFAULT '0' COMMENT 'REFERENCES nh_treatment(treat_id)',
+  `course_diary_id` int(11) unsigned NOT NULL DEFAULT '0' COMMENT 'REFERENCES nh_diary(diary_id)',
+  `sess_date` date DEFAULT NULL COMMENT 'date of completed session (NULL if incomplete)',
+  `sess_time` time DEFAULT NULL COMMENT 'time of completed session',
+  `pat_id` int(11) unsigned DEFAULT '0' COMMENT 'REFERENCES nh_patient(pat_id)',
+  `usr_id` smallint(6) unsigned DEFAULT '0' COMMENT 'REFERENCES nh_user(id) -- create user, or 1st user to complete sess_date',
+  `clin_id` smallint(6) unsigned DEFAULT '0' COMMENT 'REFERENCES nh_therapist(th_id) -- at time of creation',
+  `sess_stage` int(11) unsigned DEFAULT NULL COMMENT 'REFERENCES nh_stage(id) -- from contact form',
+  `sess_location` int(11) unsigned DEFAULT NULL COMMENT 'REFERENCES nh_list(listId) -- appointment location',
+  `sess_app_purpose` int(11) unsigned DEFAULT NULL COMMENT 'REFERENCES nh_list(listId) -- appointment purpose',
+  `sess_purpose_other` varchar(150) DEFAULT NULL COMMENT 'optional text field',
+  `sess_intervention` int(11) unsigned DEFAULT NULL COMMENT 'REFERENCES nh_list(listId) -- primary intervention',
+  `sess_second_intervention_other` varchar(150) DEFAULT NULL COMMENT 'optional text field',
+  `sess_sign_post` int(11) unsigned DEFAULT NULL COMMENT 'REFERENCES nh_list(listId) -- sign post to field on contact form',
+  `sess_step` int(11) unsigned DEFAULT NULL COMMENT 'REFERENCES nh_list(listId) -- step (end of session) field',
+  `sess_type` int(11) unsigned DEFAULT NULL COMMENT 'REFERENCES nh_list(listId) -- appointment type',
+  `sess_ffcomm` int(11) unsigned DEFAULT NULL COMMENT 'REFERENCES nh_list(listId) -- face to face communication mode',
+  `sess_attendance` int(11) unsigned DEFAULT NULL COMMENT 'REFERENCES nh_list(listId) -- attendance',
+  `sess_phq9` tinyint(3) DEFAULT NULL COMMENT 'patient health questionaire 9 score',
+  `sess_gad7` tinyint(3) DEFAULT NULL COMMENT 'generalised anxiety disorder 7 score',
+  `sess_risk_qu9` tinyint(3) DEFAULT NULL COMMENT 'risk q9 score',
+  `sess_core10i6` tinyint(3) DEFAULT NULL COMMENT 'Core 10 Item 6 score',
+  `sess_wsas` tinyint(3) DEFAULT NULL COMMENT 'work &amp; social adjustment scale score',
+  `sess_phobiaQ1` tinyint(3) DEFAULT NULL COMMENT 'phobia q1 score',
+  `sess_phobiaQ2` tinyint(3) DEFAULT NULL COMMENT 'phobia q2 score',
+  `sess_phobiaQ3` tinyint(3) DEFAULT NULL COMMENT 'phobia q3 score',
+  `sess_emp_stat` int(11) unsigned DEFAULT NULL COMMENT 'REFERENCES nh_list(listId) -- employment status ',
+  `sess_rssp` tinyint(1) DEFAULT NULL COMMENT 'deprecated, statutory_sick_pay is used instead',
+  `sess_rb` tinyint(1) DEFAULT NULL COMMENT 'recieiving benefits, 1=yes,2=no,3=unknown',
+  `sess_medication` tinyint(1) DEFAULT NULL COMMENT 'deprecated, psychotropic_medication is used instead',
+  `sess_notes` text COMMENT 'unused - contains legacy data for some services',
+  `sess_clin_time` smallint(6) unsigned DEFAULT NULL COMMENT 'clinical time, minutes',
+  `sess_admin_time` smallint(6) unsigned DEFAULT NULL COMMENT 'admin time, minutes',
+  `sess_super_time` smallint(6) unsigned DEFAULT NULL COMMENT 'supervision time, minutes',
+  `group_record_time` smallint(6) unsigned DEFAULT NULL COMMENT 'recorded group therapy time',
+  `group_num_attendees` tinyint(3) unsigned DEFAULT NULL COMMENT 'number of patients attended this session',
+  `sess_next_cont_value` tinyint(10) unsigned DEFAULT NULL COMMENT 'next expected contact within x sess_next_cont_unit',
+  `sess_next_cont_unit` varchar(10) DEFAULT NULL COMMENT 'next expected contact unit, days, weeks, months',
+  `sess_svc_proj` varchar(40) DEFAULT NULL COMMENT 'unused - contains legacy data for newham',
+  `sess_svc_exist` varchar(10) DEFAULT NULL COMMENT 'unused - contains legacy data for newham',
+  `sess_modal` varchar(20) DEFAULT NULL COMMENT 'unused - contains legacy data for newham',
+  `sess_modal_other` varchar(255) DEFAULT NULL COMMENT 'unused - contains legacy data for newham',
+  `sess_step_other` varchar(255) DEFAULT NULL COMMENT 'unused - contains legacy data for newham',
+  `sess_summ_title` text COMMENT 'clinical summary title - optional',
+  `sess_summary` text COMMENT 'text of clinical notes summary',
+  `appointmentDate` date DEFAULT NULL COMMENT 'date of booked appointment',
+  `appointmentTime` time DEFAULT NULL COMMENT 'time of booked appointment',
+  `appointmentLength` time DEFAULT NULL COMMENT 'length of appointment in hours and minutes',
+  `appointmentNotes` text COMMENT 'notes made when booking appointment',
+  `emp_benefit_status` int(11) unsigned DEFAULT NULL COMMENT 'REFERENCES nh_list(listId) -- benefit status',
+  `emp_wsas_work` varchar(3) DEFAULT NULL COMMENT 'W&amp;SAS ability to work (0-8,N/A)',
+  `emp_sickness_absence` tinyint(3) unsigned DEFAULT NULL COMMENT 'Number of days sickness absence in the last four weeks.',
+  `emp_episodes_absence` tinyint(3) unsigned DEFAULT NULL COMMENT 'Number of episodes of sickness absence in the last 4 weeks',
+  `sess_ccsClass` tinyint(3) unsigned DEFAULT NULL COMMENT 'field containing CCS Class data',
+  `sess_dyspnoeaMRC` tinyint(3) unsigned DEFAULT NULL COMMENT 'field containing Dyspnoea MRC data',
+  `sess_weight` smallint(6) unsigned DEFAULT NULL COMMENT 'field containing Weight data',
+  `sess_hba1c` tinyint(3) unsigned DEFAULT NULL COMMENT 'field containing Hba1c data',
+  `presenteeism` int(11) unsigned DEFAULT NULL COMMENT 'REFERENCES nh_list(listId) -- field containing Presenteeism data',
+  `agoraphobia_mi_accompanied` float(4,2) unsigned DEFAULT NULL COMMENT 'field containing average score of Agoraphobia: mobility inventory(when accompanied) data',
+  `agoraphobia_mi_alone` float(4,2) unsigned DEFAULT NULL COMMENT 'field containing average score of Agoraphobia: mobility inventory(when alone) data',
+  `penn_state_worry` tinyint(3) unsigned DEFAULT NULL COMMENT 'Generalised anxiety disorder penn state worry',
+  `short_week_scale` tinyint(3) unsigned DEFAULT NULL COMMENT 'field containing Health anxiety inventory short week scale data',
+  `compulsive_disorder_inventory` tinyint(3) unsigned DEFAULT NULL COMMENT 'field containing Obsessive compulsive disorder inventory data',
+  `panic_disorder_severity` tinyint(3) unsigned DEFAULT NULL COMMENT 'field containing Panic disorder severity scale data',
+  `impact_event_scale` tinyint(3) unsigned DEFAULT NULL COMMENT 'field containing Post traumatic stress disorder impact of events scale data',
+  `phobia_inventory` tinyint(3) unsigned DEFAULT NULL COMMENT 'field containing Social phobia inventory data',
+  `retention` tinyint(3) unsigned DEFAULT NULL COMMENT 'field containing Retention data',
+  `confidence_seeking_work` tinyint(3) unsigned DEFAULT NULL COMMENT 'field containing Confidence seeking work data',
+  `statutory_sick_pay` int(11) unsigned DEFAULT NULL COMMENT 'REFERENCES nh_list(listId) -- statutory sick pay',
+  `psychotropic_medication` int(11) unsigned DEFAULT NULL COMMENT 'REFERENCES nh_list(listId) -- psychotropic medication',
+  `honos_clustering` int(11) unsigned DEFAULT NULL COMMENT 'REFERENCES nh_list(listId) -- Honos clustering',
+  `pcln_BMI` float(5,2) unsigned DEFAULT NULL COMMENT 'BMI = height / (weight *weight)',
+  `sess_category` tinyint(3) unsigned NOT NULL DEFAULT '1' COMMENT 'contact is: 1=clinical contact, 2=other contact (no mds)',
+  `sess_data_type` tinyint(3) unsigned NOT NULL DEFAULT '1' COMMENT 'treatment type 0-&gt;NON-IAPT, 1-&gt;IAPT, 2-&gt;EMPLOYMENT,etc',
+  `short_notice_cancellation` int(11) DEFAULT NULL COMMENT 'REFERENCES nh_list(listId) -- short notice cancellation',
+  `live` tinyint(3) unsigned NOT NULL DEFAULT '1' COMMENT '1 if live, 0 if deleted',
+  `temp` tinyint(3) NOT NULL DEFAULT '0' COMMENT '1 if temp contact (autosaved)',
+  PRIMARY KEY (`sess_id`),
+  KEY `pat_id` (`pat_id`),
+  KEY `clin_id` (`clin_id`),
+  KEY `usr_id` (`usr_id`),
+  KEY `epis_id` (`epis_id`),
+  KEY `sess_app_purpose` (`sess_app_purpose`),
+  KEY `sess_attendance` (`sess_attendance`),
+  KEY `sess_stage` (`sess_stage`),
+  KEY `sess_location` (`sess_location`),
+  KEY `sess_intervention` (`sess_intervention`),
+  KEY `sess_sign_post` (`sess_sign_post`),
+  KEY `sess_step` (`sess_step`),
+  KEY `sess_type` (`sess_type`),
+  KEY `sess_emp_stat` (`sess_emp_stat`),
+  KEY `emp_benefit_status` (`emp_benefit_status`),
+  KEY `course_diary_id` (`course_diary_id`),
+  KEY `sess_date` (`sess_date`,`clin_id`),
+  KEY `honos_cluster` (`honos_clustering`),
+  KEY `clin_id_live` (`clin_id`,`live`)
+) ENGINE=MyISAM AUTO_INCREMENT=1131082 DEFAULT CHARSET=utf8 COMMENT='Record patient appointments and results'</string>
+		<string>/* TRANSACTION */
+INSERT INTO Transaction VALUES
+(1, 6, 1, 1, 1, '2012-11-16', '2012-12-04', 100000, 1000),
+(2, 7, 2, 2, 1, '2012-11-20', '2012-12-24', 110000, 1000),
+(3, 8, 1, 3, 4, '2012-10-12', '2012-11-04', 150000, 1000),
+(4, 9, 1, 4, 3, '2012-10-17', '2012-11-09', 160000, 1000),
+(5, 10, 2, 15, 3, '2012-11-23', '2012-11-30', 170000, 1000),
+(6, 11, 1, 12, 3, '2012-12-11', '2012-12-23', 90000, 1000),
+(7, 12, 2, 24, 3, '2012-11-07', '2012-12-01', 120000, 1000),
+(8, 13, 1, 34, 3, '2012-12-14', '2012-12-28', 80000, 1000),
+(9, 14, 1, 44, 1, '2012-11-16', '2012-12-04', 100000, 1000),
+(10, 15, 2, 52, 1, '2012-11-20', '2012-12-24', 110000, 1000),
+(11, 16, 1, 62, 4, '2012-10-12', '2012-11-04', 150000, 1000),
+(12, 17, 1, 68, 3, '2012-10-17', '2012-11-09', 160000, 1000),
+(13, 18, 2, 46, 3, '2012-11-23', '2012-11-30', 170000, 1000),
+(14, 19, 1, 33, 3, '2012-12-11', '2012-12-23', 90000, 1000),
+(15, 20, 2, 21, 3, '2012-11-07', '2012-12-01', 120000, 1000),
+(16, 20, 1, 30, 3, '2012-12-14', '2012-12-28', 80000, 1000),
+(17, 16, 2, 25, 2, '2012-12-02', '2012-12-08', 120000, 1000),
+(18, 11, 1, 35, 5, '2012-12-24', '2013-01-11', 80000, 1000),
+(19, 9, 1, 10, 5, '2013-01-24', '2013-02-11', 170000, 1000),
+(20, 7, 2, 69, 5, '2013-01-24', '2013-02-11', 120000, 1000)</string>
+		<string>CREATE TABLE Transaction (
+  transactionID INTEGER,
+  salesAdvisorID INTEGER NOT NULL,
+  customerID INTEGER NOT NULL,
+  propertyID INTEGER NOT NULL,
+  solicitorID INTEGER NOT NULL,
+  initialDate DATETIME NOT NULL,
+  finalisationDate DATETIME,
+  value DECIMAL(10,2),
+  solictorFee DECIMAL(10,2),
+  CONSTRAINT pTransaction PRIMARY KEY(transactionID),
+  CONSTRAINT fTransactionSalesAd  FOREIGN KEY(salesAdvisorID) REFERENCES SalesAdvisor(salesAdvisorID),
+  CONSTRAINT fTransactionCust FOREIGN KEY(customerID) REFERENCES Customer(customerID),
+  CONSTRAINT fTransactionProp FOREIGN KEY(propertyID) REFERENCES Property(propertyID),
+  CONSTRAINT fTransactionSolicitor  FOREIGN KEY(solicitorID) REFERENCES Solicitor(solicitorID)
+)</string>
+		<string>USE happyhomes;
+/* REGIONAL OFFICE */
+INSERT INTO RegionalOffice VALUES
+(1, 'North East', '6 Deangate', 'York', 'YO1 7JB', '01904749035'),
+(2, 'North West', '62 Wilson Street', 'Glasgow', 'G1 1HD', '01415526522'),
+(3, 'Central', '22 Cannon Street', 'Birmingham', 'B2 5EN', '01216438900'),
+(4, 'South West', '49 Broad Street', 'Bristol', 'BS1 2EP', '01179252520'),
+(5, 'South East', '10 James Street', 'London', 'WC2E 8BT', '02078364678');
+/* LOCAL OFFICE */
+INSERT INTO LocalOffice VALUES
+(1, 1, '4 Parliament Street', 'York', 'YO1 8SE', '01904676867'),
+(2, 1, '92 Linthorpe Road', 'Middlesbrough', 'TS1 2NR', '01642224401'),
+(3, 1, '26 Great George Street', 'Leeds', 'LS1 3DL', '01132440810'),
+(4, 2, '44 Gilmore Place', 'Edinburgh', 'EH3 9NQ', '01312299932'),
+(5, 2, '94 Nethergate', 'Dundee', 'DD1 4EL', '01382200302'),
+(6, 2, '31 Saint Andrew Street', 'Aberdeen', 'AB25 1JA', '01224451444'),
+(7, 3, '29 Millstone Lane', 'Leicester', 'LE1 5JN', '01162622555'),
+(8, 3, '22 Bridge Street', 'Northhampton', 'NN1 1NW', '01604230222'),
+(9, 3, '36 Church Street', 'Stoke-on-Trent', 'ST4 1DJ', '01782410411'),
+(10, 4, '51 Wellsway', 'Bath', 'BA2 4RS', '01225423434'),
+(11, 4, '66 South Street', 'Exeter', 'EX1 1EE', '01392279897'),
+(12, 4, '5 Annerley Road', 'Bournemouth', 'BH1 3PG', '01202315067'),
+(13, 5, '51 Regency Square', 'Brighton', 'BN1 2FF', '01273205286'),
+(14, 5, '134 Balham High Road', 'London', 'SW12 8BN', '02086750319'),
+(15, 5, '2 North Station Road', 'Colchester', 'CO1 1RB', '01206500200');
+/* STAFF (SITE MANAGERS) */
+INSERT INTO Staff VALUES
+(1, 'John', 'Bishop', '37 Bull Lane', 'York', 'YO10 3EN', '07534672551', 'john.bishop@happyhomes.co.uk', 50000),
+(2, 'Emma', 'Smith', '167 Renfrew Street', 'Glasgow', 'G3 6RQ', '07671345842', 'emma.smith@happyhomes.co.uk', 50000),
+(3, 'Michael', 'Robinson', '40 Tennal Road', 'Birmingham', 'B32 2JE', '07546374940', 'michael.robinson@happyhomes.co.uk', 50000),
+(4, 'Chris', 'Luscombe', '66 Raymend Road', 'Bristol', 'BS3 4QW', '07487515466', 'chris.luscombe@happyhomes.co.uk', 50000),
+(5, 'Sarah', 'Peterson', '212 Kingland Road', 'London', 'E2 8AX', '07452159785', 'speterson@happyhomes.co.uk', 50000);
+INSERT INTO SiteManager VALUES
+(1, 1, '07836487364'),
+(2, 2, '07734759863'),
+(3, 3, '07183749553'),
+(4, 4, '07668304212'),
+(5, 5, '07456822937');
+/* STAFF (SALES ADVISORS) */
+INSERT INTO Staff VALUES
+(6, 'Mairenn', 'Vincent', '83 Northcome Road', 'York', 'YO1 2HS', '07873648785', 'mvincent@happyhomes.co.uk', 40000),
+(7, 'Humbert', 'Boone', '12 Oliver Road', 'Middlesbrough', 'TS1 9IA', '07736485758', 'humburt.boone@happyhomes.co.uk', 40000),
+(8, 'Talulla', 'Strickland', '8 Patrick Street', 'Leeds', 'LS1 8HS', '07837464743', 'talulla.strickland@happyhomes.co.uk', 40000),
+(9, 'Katelynn', 'Monaghan', '24 Ashton Road', 'Edinburgh', 'EH3 1AH', '07837474757', 'katelynn.monaghan@happyhomes.co.uk', 40000),
+(10, 'Delmar', 'Womack', '75 Eaton Road', 'Dundee', 'DD1 5GS', '07763428345', 'delmar.womack@happyhomes.co.uk', 40000),
+(11, 'Kat', 'Duane', '47 Hemlock Grove', 'Aberdeen', 'AB25 9KB', '07836464739', 'kat.duane@happyhomes.co.uk', 40000),
+(12, 'Gretchen', 'Cavanaugh', '37 Graham Road', 'Leicester', 'LE1 9LA', '07786855670', 'gretchen.cavanaugh@happyhomes.co.uk', 40000),
+(13, 'Carolina', 'Tuff', '68 Ashtree Road', 'Northhampton', 'NN1 0TW', '07847474743', 'carolina.tuff@happyhomes.co.uk', 40000),
+(14, 'Madelina', 'Houston', '95 Apple Lane', 'Stoke-on-Trent', 'ST4 8YG', '07836401641', 'mhouston@happyhomes.co.uk', 40000),
+(15, 'Wenona', 'O\'Malley', '43 Back Street', 'Bath', 'BA1 2JQ', '07737476462', 'wonona.omalley@happyhomes.co.uk', 40000),
+(16, 'Olive', 'O\'brian', '12 St Mary Road', 'Exeter', 'EX1 6TE', '07837464622', 'oobrian@happyhomes.co.uk', 40000),
+(17, 'Madelina', 'Lyon', '96 Market Street', 'Bournemouth', 'BH1 1KX', '07837463535', 'mlyon@happyhomes.co.uk', 40000),
+(18, 'Gregor', 'Jepson', '82 High Road', 'Brighton', 'BN1 8HH', '07827363632', 'gregor.jepson@happyhomes.co.uk', 40000),
+(19, 'Teàrlag', 'Macgrory', '3 Albert Road', 'London', 'SW12 0JM', '07836464632', 't.macgrory@happyhomes.co.uk', 40000),
+(20, 'Delilah', 'Quick', '78 South Street', 'Colchester', 'CO1 3RS', '07373767464', 'delilah.quick@happyhomes.co.uk', 40000);
+INSERT INTO SalesAdvisor VALUES
+(6, 1, '0001', 0.05),
+(7, 2, '0002', 0.05),
+(8, 3, '0003', 0.01),
+(9, 4, '0004', 0.05),
+(10, 5, '0005', 0.1),
+(11, 6, '0006', 0.175),
+(12, 7, '0007', 0.05),
+(13, 8, '0008', 0.07),
+(14, 9, '0009', 0.05),
+(15, 10, '0010', 0.05),
+(16, 11, '0011', 0.15),
+(17, 12, '0012', 0.05),
+(18, 13, '0013', 0.02),
+(19, 14, '0014', 0.05),
+(20, 15, '0015', 0.05);
+/* DEVELOPMENT */
+INSERT INTO Development VALUES
+(1, 1, '2012-05-02', '2012-09-26'),
+(2, 1, '2012-10-05', '2013-01-14'),
+(3, 1, '2013-02-01', NULL),
+(4, 2, '2012-08-12', '2012-12-19'),
+(5, 2, '2013-02-01', NULL),
+(6, 3, '2012-02-01', '2013-02-20'),
+(7, 3, '2013-03-01', NULL),
+(8, 4, '2012-05-22', '2012-11-07'),
+(9, 4, '2012-11-26', '2013-03-12'),
+(10, 4, '2013-03-29', '2013-04-12'),
+(11, 5, '2013-01-06', '2013-04-28');
+/* PROPERTY TYPE */
+INSERT INTO PropertyType VALUES
+('Charleston', 3, 3, 1, 1, 'double garage', 2, 30),
+('Henslow', 4, 3, 2, 1, 'double garage', 2, 60),
+('McLeary', 2, 2, 1, 0, 'parking space', 2, 0),
+('Richardson', 2, 4, 2, 2, 'single garage', 2, 10);
+/* PROPERTY */
+INSERT INTO Property VALUES
+(1, 1, 'Charleston', 1),
+(2, 1, 'Charleston', 1),
+(3, 1, 'Charleston', 2),
+(4, 1, 'Charleston', 2),
+(5, 1, 'Henslow', 3),
+(6, 1, 'Henslow', 4),
+(7, 1, 'McLeary', 5),
+(8, 1, 'McLeary', 5),
+(9, 1, 'McLeary', 5),
+(10, 2, 'Charleston', 1),
+(11, 2, 'Charleston', 1),
+(12, 2, 'Charleston', 2),
+(13, 2, 'Charleston', 2),
+(14, 2, 'Henslow', 3),
+(15, 2, 'Henslow', 4),
+(16, 2, 'McLeary', 5),
+(17, 2, 'McLeary', 5),
+(18, 2, 'McLeary', 5),
+(19, 3, 'Charleston', 1),
+(20, 3, 'Charleston', 1),
+(21, 3, 'Charleston', 2),
+(22, 3, 'Charleston', 2),
+(23, 3, 'Henslow', 3),
+(24, 3, 'Henslow', 4),
+(25, 3, 'McLeary', 5),
+(26, 3, 'McLeary', 5),
+(27, 3, 'McLeary', 5),
+(28, 4, 'Charleston', 1),
+(29, 4, 'Charleston', 1),
+(30, 4, 'Charleston', 2),
+(31, 4, 'McLeary', 2),
+(32, 4, 'McLeary', 2),
+(33, 5, 'Henslow', 1),
+(34, 5, 'Henslow', 2),
+(35, 6, 'Charleston', 1),
+(36, 6, 'Charleston', 1),
+(37, 6, 'Charleston', 2),
+(38, 6, 'McLeary', 2),
+(39, 6, 'McLeary', 2),
+(40, 7, 'Henslow', 1),
+(41, 7, 'Henslow', 2),
+(42, 7, 'McLeary', 3),
+(43, 7, 'McLeary', 3),
+(44, 7, 'McLeary', 3),
+(45, 8, 'Charleston', 1),
+(46, 8, 'Charleston', 1),
+(47, 8, 'Charleston', 2),
+(48, 8, 'McLeary', 2),
+(49, 8, 'McLeary', 2),
+(50, 9, 'Henslow', 1),
+(51, 9, 'Henslow', 2),
+(52, 9, 'McLeary', 3),
+(53, 9, 'McLeary', 3),
+(54, 9, 'McLeary', 3),
+(55, 10, 'Charleston', 1),
+(56, 10, 'Charleston', 1),
+(57, 10, 'Charleston', 2),
+(58, 10, 'Charleston', 2),
+(59, 10, 'Henslow', 3),
+(60, 10, 'Henslow', 4),
+(61, 10, 'McLeary', 5),
+(62, 10, 'McLeary', 5),
+(63, 10, 'McLeary', 5),
+(64, 11, 'Charleston', 1),
+(65, 11, 'Charleston', 1),
+(66, 11, 'Charleston', 2),
+(67, 11, 'McLeary', 2),
+(68, 11, 'McLeary', 2),
+(69, 11, 'Richardson', 3),
+(70, 11, 'Richardson', 3);
+/* CUSTOMER */
+INSERT INTO Customer VALUES
+(1, 'Dan', 'Mickleston', '63 Merryweather Road', 'York', 'YO1 2JF', '07846756554', 'dannyboy@hotmail.com'),
+(2, 'Lara', 'Smith', '27 Rock Street', 'Bath', 'BA2 6GS', '07836456573', 'larasmith63@yahoo.co.uk');
+/* SOLICITOR */
+INSERT INTO Solicitor VALUES
+(1, 1, 'Reginald', 'Robertson', '25 Oxbridge Street', 'York', 'YO1 8HR', '07625374857', 'rrobinson@rroblegal.co.uk'),
+(2, 2, 'Lisa', 'Oxheart', '70 Porterbelly Road', 'Dundee', 'DD1 1LZ', '07847756390', 'loxheart@loxylaw.co.uk'),
+(3, 3, 'Isabel', 'Isaacson', '9 Church Street', 'Leicester', 'LS1 7NO', '07098642685', 'isabel@iisolicitors.co.uk'),
+(4, 4, 'Nathan', 'McAllister', '58 Locks Hill', 'Bristol', 'BS3 6YJ', '07846565644', 'nathan@mcallisterandco.co.uk'),
+(5, 5, 'Sam', 'Smith', '87 Peddlers Grove', 'London', 'SW12 8JM', '07937464647', 'sam@sslegal.co.uk');
+/* TRANSACTION */
+INSERT INTO Transaction VALUES
+(1, 6, 1, 1, 1, '2012-11-16', '2012-12-04', 100000, 1000),
+(2, 7, 2, 2, 1, '2012-11-20', '2012-12-24', 110000, 1000),
+(3, 8, 1, 3, 4, '2012-10-12', '2012-11-04', 150000, 1000),
+(4, 9, 1, 4, 3, '2012-10-17', '2012-11-09', 160000, 1000),
+(5, 10, 2, 15, 3, '2012-11-23', '2012-11-30', 170000, 1000),
+(6, 11, 1, 12, 3, '2012-12-11', '2012-12-23', 90000, 1000),
+(7, 12, 2, 24, 3, '2012-11-07', '2012-12-01', 120000, 1000),
+(8, 13, 1, 34, 3, '2012-12-14', '2012-12-28', 80000, 1000),
+(9, 14, 1, 44, 1, '2012-11-16', '2012-12-04', 100000, 1000),
+(10, 15, 2, 52, 1, '2012-11-20', '2012-12-24', 110000, 1000),
+(11, 16, 1, 62, 4, '2012-10-12', '2012-11-04', 150000, 1000),
+(12, 17, 1, 68, 3, '2012-10-17', '2012-11-09', 160000, 1000),
+(13, 18, 2, 46, 3, '2012-11-23', '2012-11-30', 170000, 1000),
+(14, 19, 1, 33, 3, '2012-12-11', '2012-12-23', 90000, 1000),
+(15, 20, 2, 21, 3, '2012-11-07', '2012-12-01', 120000, 1000),
+(16, 20, 1, 30, 3, '2012-12-14', '2012-12-28', 80000, 1000),
+(17, 16, 2, 25, 2, '2012-12-02', '2012-12-08', 120000, 1000),
+(18, 11, 1, 35, 5, '2012-12-24', '2013-01-11', 80000, 1000),
+(19, 9, 1, 10, 5, '2013-01-24', '2013-02-11', 170000, 1000),
+(20, 7, 2, 69, 5, '2013-01-24', '2013-02-11', 120000, 1000)</string>
+		<string>/* debug output */
+SHOW TABLES</string>
+		<string>CREATE TABLE Property (
+  propertyID INTEGER,
+  developmentID INTEGER NOT NULL,
+  propertyType VARCHAR(10) NOT NULL,
+  plot INTEGER NOT NULL,
+  CONSTRAINT pProperty PRIMARY KEY(propertyID),
+  CONSTRAINT fPropertyDev FOREIGN KEY(developmentID) REFERENCES Development(developmentID),
+  CONSTRAINT fPropertyPType FOREIGN KEY(propertyType) REFERENCES PropertyType(propertyType)
+)</string>
+		<string>CREATE TABLE Development (
+  developmentID INTEGER,
+  siteManagerID INTEGER NOT NULL,
+  dateStarted DATE NOT NULL,
+  dateFinished DATE,
+  CONSTRAINT pDevelopment PRIMARY KEY(developmentID),
+  CONSTRAINT fDevelopmentSiteMan FOREIGN KEY(siteManagerID) REFERENCES SiteManager(siteManagerID)
+)</string>
+		<string>CREATE TABLE SiteManager (
+  siteManagerID INTEGER,
+  regionalOfficeID INTEGER NOT NULL,
+  businessTelNo VARCHAR(15) NOT NULL,
+  CONSTRAINT pSiteManager PRIMARY KEY(siteManagerID),
+  CONSTRAINT fSiteManagerStaff FOREIGN KEY(siteManagerID) REFERENCES Staff(staffID),
+  CONSTRAINT fSiteManagerOffice FOREIGN KEY(regionalOfficeID) REFERENCES RegionalOffice(regionalOfficeID)
+)</string>
+		<string>###############################
+​
+CREATE TABLE SiteManager (
+  siteManagerID INTEGER,
+  regionalOfficeID INTEGER NOT NULL,
+  businessTelNo VARCHAR(15) NOT NULL,
+  CONSTRAINT pSiteManager PRIMARY KEY(siteManagerID),
+  CONSTRAINT fSiteManagerStaff FOREIGN KEY(siteManagerID) REFERENCES Staff(staffID),
+  CONSTRAINT fSiteManagerOffice FOREIGN KEY(regionalOfficeID) REFERENCES RegionalOffice(regionalOfficeID)
+)</string>
+		<string>/* create database */
+DROP DATABASE IF EXISTS happyhomes;
+CREATE DATABASE IF NOT EXISTS happyhomes;
+USE happyhomes;
+CREATE TABLE RegionalOffice (
+  regionalOfficeID  INTEGER,
+  region VARCHAR(10) NOT NULL,
+  address VARCHAR(50) NOT NULL,
+  city VARCHAR(30) NOT NULL,
+  postcode VARCHAR(8) NOT NULL,
+  telNo VARCHAR(15) NOT NULL,
+  
+  CONSTRAINT pRegionalOffice PRIMARY KEY(regionalOfficeID),
+  CONSTRAINT cRegionalOfficeRegion CHECK (region IN ('North West','North East','Central','South West','South East'))
+);
+CREATE TABLE LocalOffice (
+  localOfficeID INTEGER,
+  regionalOfficeID INTEGER NOT NULL,
+  address VARCHAR(50) NOT NULL,
+  city VARCHAR(30) NOT NULL,
+  postcode VARCHAR(8) NOT NULL,
+  telNo VARCHAR(15) NOT NULL,
+  
+  CONSTRAINT pLocalOffice PRIMARY KEY(localOfficeID),
+  CONSTRAINT fLocalOfficeRegion FOREIGN KEY(regionalOfficeID) REFERENCES RegionalOffice(regionalOfficeID)
+);
+CREATE TABLE Staff (
+  staffID INTEGER,
+  fName VARCHAR(35) NOT NULL,
+  lName VARCHAR(35) NOT NULL,
+  address VARCHAR(50) NOT NULL,
+  city VARCHAR(30) NOT NULL,
+  postcode VARCHAR(8) NOT NULL,
+  contactTelNo VARCHAR(15) NOT NULL,
+  email VARCHAR(254) NOT NULL,
+  salary DECIMAL(9,2) NOT NULL,
+  
+  CONSTRAINT pStaff PRIMARY KEY(staffID)
+);
+CREATE TABLE SiteManager (
+  siteManagerID INTEGER,
+  regionalOfficeID INTEGER NOT NULL,
+  businessTelNo VARCHAR(15) NOT NULL,
+​
+  CONSTRAINT pSiteManager PRIMARY KEY(siteManagerID),
+  CONSTRAINT fSiteManagerStaff FOREIGN KEY(siteManagerID) REFERENCES Staff(staffID),
+  CONSTRAINT fSiteManagerOffice FOREIGN KEY(regionalOfficeID) REFERENCES RegionalOffice(regionalOfficeID)
+);
+CREATE TABLE SalesAdvisor (
+  salesAdvisorID INTEGER,
+  localOfficeID INTEGER NOT NULL,
+  internalExtension VARCHAR(4) NOT NULL,
+  commisionRate DECIMAL(4,3) NOT NULL,
+  
+  CONSTRAINT pSalesAdvisor PRIMARY KEY(salesAdvisorID),
+  CONSTRAINT fSalesAdvisorStaff FOREIGN KEY(salesAdvisorID) REFERENCES Staff(staffID),
+  CONSTRAINT fSalesAdvisorOffice FOREIGN KEY(localOfficeID) REFERENCES LocalOffice(localOfficeID)
+);
+CREATE TABLE Development (
+  developmentID INTEGER,
+  siteManagerID INTEGER NOT NULL,
+  dateStarted DATE NOT NULL,
+  dateFinished DATE,
+  
+  CONSTRAINT pDevelopment PRIMARY KEY(developmentID),
+  CONSTRAINT fDevelopmentSiteMan FOREIGN KEY(siteManagerID) REFERENCES SiteManager(siteManagerID)
+);
+CREATE TABLE PropertyType (
+  propertyType VARCHAR(10),
+  bedroomNo INTEGER(2) NOT NULL,
+  receptionRoomNo INTEGER(2) NOT NULL,
+  bathroomNo INTEGER(2) NOT NULL,
+  ensuiteNo INTEGER(2) NOT NULL,
+  parkingAllocation VARCHAR(13) NOT NULL,
+  numberOfFloors INT(1) NOT NULL,
+  gardenSize INT(3) NOT NULL,
+  
+  CONSTRAINT pPropertyType PRIMARY KEY(propertyType),
+  CONSTRAINT cPropetyTypeParking CHECK (parkingAllocation IN ('single garage','double garage','parking space','carport'))
+);
+CREATE TABLE Property (
+  propertyID INTEGER,
+  developmentID INTEGER NOT NULL,
+  propertyType VARCHAR(10) NOT NULL,
+  plot INTEGER NOT NULL,
+  
+  CONSTRAINT pProperty PRIMARY KEY(propertyID),
+  CONSTRAINT fPropertyDev FOREIGN KEY(developmentID) REFERENCES Development(developmentID),
+  CONSTRAINT fPropertyPType FOREIGN KEY(propertyType) REFERENCES PropertyType(propertyType)
+);
+CREATE TABLE Customer (
+  customerID INTEGER,
+  fName VARCHAR(35) NOT NULL,
+  lName VARCHAR(35) NOT NULL,
+  address VARCHAR(50) NOT NULL,
+  city VARCHAR(30) NOT NULL,
+  postcode VARCHAR(8) NOT NULL,
+  telNo VARCHAR(15) NOT NULL,
+  email VARCHAR(254) NOT NULL,
+  
+  CONSTRAINT pCustomer PRIMARY KEY(customerID)
+);
+CREATE TABLE Solicitor (
+  solicitorID INTEGER,
+  localOfficeID INTEGER NOT NULL,
+  fName VARCHAR(35) NOT NULL,
+  lName VARCHAR(35) NOT NULL,
+  address VARCHAR(50) NOT NULL,
+  city VARCHAR(30) NOT NULL,
+  postcode VARCHAR(8) NOT NULL,
+  telNo VARCHAR(15) NOT NULL,
+  email VARCHAR(254) NOT NULL,
+  
+  CONSTRAINT pSolicitor PRIMARY KEY(solicitorID),
+  CONSTRAINT fSolicitorOffice FOREIGN KEY(localOfficeID) REFERENCES LocalOffice(localOfficeID)
+);
+CREATE TABLE Transaction (
+  transactionID INTEGER,
+  salesAdvisorID INTEGER NOT NULL,
+  customerID INTEGER NOT NULL,
+  propertyID INTEGER NOT NULL,
+  solicitorID INTEGER NOT NULL,
+  initialDate DATETIME NOT NULL,
+  finalisationDate DATETIME,
+  value DECIMAL(10,2),
+  solictorFee DECIMAL(10,2),
+  
+  CONSTRAINT pTransaction PRIMARY KEY(transactionID),
+  CONSTRAINT fTransactionSalesAd  FOREIGN KEY(salesAdvisorID) REFERENCES SalesAdvisor(salesAdvisorID),
+  CONSTRAINT fTransactionCust FOREIGN KEY(customerID) REFERENCES Customer(customerID),
+  CONSTRAINT fTransactionProp FOREIGN KEY(propertyID) REFERENCES Property(propertyID),
+  CONSTRAINT fTransactionSolicitor  FOREIGN KEY(solicitorID) REFERENCES Solicitor(solicitorID)
+);
+/* debug output */
+SHOW TABLES</string>
+		<string>SELECT
+	c.courseTitle,
+	CASE WHEN COUNT(s.fname) IS NULL THEN 0 ELSE COUNT(s.fname) END
+FROM Lease l
+	JOIN Student s ON l.studentid = s.studentid
+	RIGHT JOIN Course c ON s.courseNo = c.courseNo
+GROUP BY courseTitle</string>
+		<string>SELECT
+	c.courseTitle,
+	CASE WHEN COUNT(s.fname) IS NULL THEN 0 ELSE COUNT(s.fname) END
+FROM Lease l
+	JOIN Student s ON l.studentid = s.studentid
+	JOIN Course c ON s.courseNo = c.courseNo
+GROUP BY courseTitle</string>
+		<string>SELECT
+	c.courseTitle,
+	CASE WHEN COUNT(s.fname) IS NULL THEN 0 ELSE COUNT(s.fname)
+FROM Lease l
+	JOIN Student s ON l.studentid = s.studentid
+	JOIN Course c ON s.courseNo = c.courseNo
+GROUP BY courseTitle</string>
+		<string>SELECT
+	c.courseTitle,
+	COUNT(s.fname)
+FROM Lease l
+	JOIN Student s ON l.studentid = s.studentid
+	FULL OUTER JOIN Course c ON s.courseNo = c.courseNo
+GROUP BY courseTitle</string>
+		<string>SELECT
+	c.courseTitle,
+	SUM(CASE WHEN l.studentid IS NOT NULL THEN 1 ELSE 0 END)
+FROM Lease l
+	JOIN Student s ON l.studentid = s.studentid
+	RIGHT JOIN Course c ON s.courseNo = c.courseNo
+GROUP BY courseTitle</string>
+		<string>SELECT
+	c.courseTitle,
+	COUNT(s.fname)
+FROM Lease l
+	JOIN Student s ON l.studentid = s.studentid
+	RIGHT JOIN Course c ON s.courseNo = c.courseNo
+GROUP BY courseTitle</string>
+		<string>SELECT
+	c.courseTitle,
+	COUNT(s.fname)
+FROM Lease l
+	JOIN Student s ON l.studentid = s.studentid
+	JOIN Course c ON s.courseNo = c.courseNo
+GROUP BY courseTitle</string>
+		<string># Set 3
+
+-- 1.  List the studentid, fName, lName and next of kin ContactTelNo of all female students. Order the list by fName within lName.
+
+-- 2.  List the fName, lName, nameOfDepartment, extno of the AdvisorsOfStudies together with the fName,lName of the students they advise for all  students whose lName starts with the letter ‘P’ or ‘W’. Order the list by Student fName within lName.
+
+-- 3.   Count the number of students registered on the University Accommodation Systems for each course.
+
+-- 4.  In question 3, if there were no students on a particular course, then the course wasn’t listed e.g. Business Systems. Change the SQL statement so that Business Systems is listed with a count value of 0. 
+
+-- 5.  List all the leases associated with the student whose lName is Kemp. Display the attributes leaseNo, semester, datePaid, and paymentDue and order the output by datePaid ascending.
+
+-- 6.  For each Flat, list the placeNo, roomNo and accommodation address, city and postcode. If the room has a  lease, then the leaseNo, dateEnter and dateLeave attributes should be displayed, otherwise nulls should be shown. Order the output by placeNo.
+
+SELECT s.studentid, fName, lName, contacttelno
+FROM Student s JOIN NextOfKin n ON s.studentid=n.studentid
+WHERE sex = 'f'
+ORDER BY lname, fname</string>
+		<string># Set 3
+
+-- 1.  List the studentid, fName, lName and next of kin ContactTelNo of all female students. Order the list by fName within lName.
+
+-- 2.  List the fName, lName, nameOfDepartment, extno of the AdvisorsOfStudies together with the fName,lName of the students they advise for all  students whose lName starts with the letter ‘P’ or ‘W’. Order the list by Student fName within lName.
+
+-- 3.   Count the number of students registered on the University Accommodation Systems for each course.
+
+-- 4.  In question 3, if there were no students on a particular course, then the course wasn’t listed e.g. Business Systems. Change the SQL statement so that Business Systems is listed with a count value of 0. 
+
+-- 5.  List all the leases associated with the student whose lName is Kemp. Display the attributes leaseNo, semester, datePaid, and paymentDue and order the output by datePaid ascending.
+
+-- 6.  For each Flat, list the placeNo, roomNo and accommodation address, city and postcode. If the room has a  lease, then the leaseNo, dateEnter and dateLeave attributes should be displayed, otherwise nulls should be shown. Order the output by placeNo.
+
+SELECT s.studentid, fName, lName, contacttelno
+FROM Student s JOIN NextOfKin n ON s.studentid=n.studentid
+WHERE sex = 'f'</string>
+		<string>SELECT
+	s.fname,
+	s.lname
+FROM Student s JOIN Course c ON s.courseNo = c.courseNo
+WHERE courseTitle = 'Software Engineering'</string>
+	</array>
+	<key>rdbms_type</key>
+	<string>mysql</string>
+	<key>rdbms_version</key>
+	<string>5.6.25</string>
+	<key>version</key>
+	<integer>1</integer>
+</dict>
+</plist>

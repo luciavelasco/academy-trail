@@ -1,0 +1,250 @@
+/* id is #
+class is . */
+
+/* width of margin 50px sides, like 7px top */
+
+
+* {
+	box-sizing: border-box;
+	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+	color: #2a2a2a;
+}
+/*I need space between the divs*/
+
+p {
+	font-size: 15px;
+	padding: 0;
+	margin: 0;
+	margin-bottom: 10px;
+}
+
+.right {
+	position: ;
+}
+
+input {
+	display: block;
+	margin: auto auto auto;
+	border: 2px solid whitesmoke;
+	padding: 3px;
+	border-radius: 5px;
+	background-color: white;
+}
+
+/*take off border things, change bg colour, increase padding, ideally change alignment and add graytext*/
+input[type="submit"] {
+	border-radius: 3px;
+	border: 0px;
+	font-size: 15px;
+	margin-bottom: 3px;
+	padding: 5px 9px 5px 9px;
+	background-color: whitesmoke;
+	color: #2a2a2a;
+}
+
+#titular {
+	background-color: #eeeeee;
+	width: 100%;
+	display: block;
+	margin: 0 auto;
+	padding: 60px 40px 60px 40px;
+	border-radius: 5px;
+	/*left align at 90% width for header??*/
+}
+
+h1{
+	font-size: 50px;
+	display: block;
+	margin: 0;
+	padding: 0;
+}
+.subsecbod {
+	background-color: white;
+}
+
+.subsec {
+	background-color: white;
+	float: left;
+	padding: 3px;
+
+}
+
+.page_fill {
+	/*Set max-width*/
+	width: 90%;
+	margin: 0 auto;
+	padding: 15px;
+}
+
+.navbar {
+	background-color: black;
+	margin: 0 auto 0 auto;
+	padding: 5px 0px 5px 15px;
+	/*need to make it central*/
+}
+
+.navbar li {
+	top: 0px;
+	color: gainsboro;
+	background-color: black;
+	display: inline-block;
+	width: auto;
+	margin: 2px 8px 1px 5px;
+	font-size: 15px;
+	/*got to make it a set max length*/
+	/*needs to be all in one line, white font, black background*/
+}
+
+/*---------------------Dropdown*/
+.dropdown {
+	/*Text Styles*/
+	color: gainsboro;
+	font-size: 15px;
+	text-decoration: none;
+	/*Hover For Subsec*/
+
+}
+
+.dropdown:hover +  .sub-menu {
+	display: block;
+}
+
+
+/*.menu-wrap {
+	display: none;
+	position: absolute;
+}
+
+.dropdown:hover + .menu-wrap {
+	display: block;
+}
+*/
+
+/*----- Menu Outline -----*/
+.sub-menu {
+    width:1000px;
+    margin:0px auto;
+    display: none;
+    position: absolute;
+}
+ 
+.sub-menu li {
+    margin:0px;
+    font-family:'Ek Mukta';
+}
+ 
+.sub-menu a {
+    transition:all linear 0.15s;
+    color:#919191;
+}
+
+.sub-menu:hover {
+	display: block;
+}
+
+ /*
+.sub-menu li:hover > a, .menu .current-item > a {
+    text-decoration:none;
+    color:#be5b70;
+}
+*/
+
+
+#top {
+	background-color: black;
+	width: 100%;
+}
+
+.button {
+	/*Basic Button*/
+	display: block;
+	height: 10%;
+	max-width: 40%;/*something per something*/
+ 	background: whitesmoke;
+	border: 1px solid darkgrey;
+	/*Text Styles*/
+	color: black;
+	text-align: center;
+	font-size: 13px;
+	/*CSS3 Styles*/
+	background-color: #3093c7;
+	background-image: -webkit-gradient(linear, left top, left bottom, from(whitesmoke), to(lightgray));
+	border-radius: 3px; /*what do?*/
+	box-shadow: 0 1px 0 gray;
+	text-shadow: 0 1px 1px orange;
+	padding: 3px;
+	/*hover properties??*/
+}
+
+a.button {
+	text-decoration: none;
+}
+
+
+.lern-btn { /*need to change text shadows (remove) and make text more central*/
+	/*Basic Button*/
+	display: block;
+	height: 45px;
+	max-width: 120px;/*something per something*/
+	/*background-color: #0b4dc9;  1486c9*/
+	border: 1px solid #004cb4;
+	/*Text Styles*/
+	color: whitesmoke;
+	text-align: center;
+	line-height: 37px;
+	vertical-align: middle;
+	font-size: 15px;
+	/*CSS3 Styles*/
+	border-radius: 7px; /*what do?*/
+	box-shadow: 0 0 0 gray;
+	padding: 3px;
+	background-color: #3093c7;
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#1486c9), to(#0b4dc9));
+}
+
+a.lern-btn {
+	text-decoration: none;
+}
+
+
+
+/*
+.clearfix:after {
+    display:block;
+    clear:both;
+}
+
+/*----- Menu Outline -----
+.menu-wrap {
+    width:100%;
+    box-shadow:0px 1px 3px rgba(0,0,0,0.2);
+    background:#3e3436;
+}
+ 
+.sub-menu {
+    width:1000px;
+    margin:0px auto;
+}
+ 
+.sub-menu li {
+    margin:0px;
+    list-style:none;
+    font-family:'Ek Mukta';
+}
+ 
+.sub-menu a {
+    transition:all linear 0.15s;
+    color:#919191;
+}
+ 
+.sub-menu li:hover > a, .menu .current-item > a {
+    text-decoration:none;
+    color:#be5b70;
+}
+
+.sub-menu .arrow {
+    font-size:11px;
+    line-height:0%;
+}
+*/
+

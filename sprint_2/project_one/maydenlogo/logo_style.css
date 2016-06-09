@@ -1,0 +1,155 @@
+/* can't border box or trapeziums malfunction
+* {
+    box-sizing: border-box;
+}*/
+
+#logoscript {
+    display: inline-block;
+    font-family: Ubuntu;
+    color: #B1B1B1;
+    font-size: 120px;
+    position: relative;
+    top: -140px;
+}
+
+#green {
+    width: 0;
+    height: 0;
+    display: inline-block;
+    border-right: 180px solid transparent;
+    border-top: 180px solid #94BA66;
+    border-left: 180px solid #94BA66;
+    border-bottom: 180px solid transparent;
+    border-top-left-radius: 180px;
+    border-top-right-radius: 180px;
+    border-bottom-left-radius: 180px;
+    border-bottom-right-radius: 180px;
+    /* Rotate */
+    -webkit-transform: rotate(-45deg);
+    -moz-transform: rotate(-45deg);
+    -ms-transform: rotate(-45deg);
+    -o-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+}
+
+#blue {
+    width: 0;
+    height: 0;
+    display: inline-block;
+    border-right: 180px solid transparent;
+    border-top: 180px solid #2A8FB0;
+    border-left: 180px solid #2A8FB0;
+    border-bottom: 180px solid transparent;
+    border-top-left-radius: 180px;
+    border-top-right-radius: 180px;
+    border-bottom-left-radius: 180px;
+    border-bottom-right-radius: 180px;
+    /* Rotate */
+    -webkit-transform: rotate(135deg);
+    -moz-transform: rotate(135deg);
+    -ms-transform: rotate(135deg);
+    -o-transform: rotate(135deg);
+    transform: rotate(135deg);
+    /*Move relative halves together*/
+    position: relative;
+    right: 360px;
+}
+
+/*
+#orange {
+    width: 136px;
+    height: 190px;
+    background: #F27324;
+    -webkit-border-radius: 63px 63px 63px 63px / 108px 108px 72px 72px;
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+}
+*/
+
+#orange {
+    width: 0;
+    height: 0;
+    display: inline-block;
+    border-top: 70px solid transparent;
+    border-left: 140px solid #F27324;
+    border-bottom: 70px solid transparent;
+    /* Rotate */
+    -webkit-transform: rotate(-90deg);
+    -moz-transform: rotate(-90deg);
+    -ms-transform: rotate(-90deg);
+    -o-transform: rotate(-90deg);
+    transform: rotate(-90deg);
+    /*position between circles*/
+    position: relative;
+    right: 610px;
+    bottom: 151px;
+}
+
+/*
+#letter_a {
+    border-radius: 100%;
+    margin: auto;
+    display: inline;
+    width: 50px;
+    padding: 50px;
+    font-size: 50px;
+    color: black;
+}
+*/
+
+#darkblue {
+
+    height: 0;
+    width: 120px;
+    display: inline-block;
+    position: relative;
+    left: 999px;
+    bottom: 196px;
+    border-bottom: 171px solid #295074;
+    border-left: 85px solid transparent;
+    border-right: 85px solid transparent;
+    /*make the bottom curved*//*make curve shallower*/
+    border-bottom-left-radius: 50% 105px ;
+    border-bottom-right-radius: 50% 105px ;
+}
+
+#righta {
+    width: 75px;
+    height: 310px;
+    background: #FFFFFF;
+    -webkit-transform: skew(27deg);
+    -moz-transform: skew(27deg);
+    -o-transform: skew(27deg);
+    transform: skew(27deg);
+    position: absolute;
+    left: 1195px;
+    top: 11px;
+    border-top-left-radius: 20px;
+}
+
+#lefta {
+    width: 75px;
+    height: 320px;
+    background: #FFFFFF;
+    -webkit-transform: skew(-27deg);
+    -moz-transform: skew(-27deg);
+    -o-transform: skew(-27deg);
+    transform: skew(-27deg);
+    position: absolute;
+    left: 1040px;
+    top: 4px;
+    border-top-left-radius: 70% 20px;
+    border-bottom-left-radius: 70% 20px;
+}
+
+#abar {
+    height: 0;
+    width: 120px;
+    border-bottom: 60px solid #FFFFFF;
+    border-left: 60px solid transparent;
+    border-right: 60px solid transparent;
+    position: absolute;
+    left: 1035px;
+    top: 190px;
+}
+
+/*Two white parallelograms and another trapezium for the A (rounded edge on one parallelogram?)*/

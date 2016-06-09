@@ -1,0 +1,3 @@
+var upperCase = require('./program')
+
+console.log(upperCase.lower('test'))

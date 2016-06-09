@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<title>Sign Up</title>
+		<link rel="stylesheet" href="forms.css" type="text/css" media="screen">
+		<link rel="stylesheet" href="normalize.css" type="text/css" media="screen">
+	</head>
+
+	<body>
+		<div>
+			<div class="header">
+				<span>Sign Up</span>
+			</div>
+			<form method="POST" action="form.html">
+				<div class="formselect">
+					<span class="fieldname">First Name</span> <input type="text" name="first-name" placeholder="Enter First Name...">
+					<br>
+					<br>
+					<span class="fieldname">Last Name</span> <input type="text" name="last-name" placeholder="Enter Last Name...">
+					<br>
+					<br>
+					<span class="fieldname">Screen Name</span> <input type="text" name="screen-name" placeholder="Enter Screen Name...">
+					<br>
+					<br>
+					<span class="fieldname">Date of Birth</span> <input type="date" name="dob"> <!-- <input type="day" name="dob"> <input type="year" name="dob"> -->
+					<br>
+					<br>
+					<span class="fieldname">Gender</span> <label>Male<input type="radio" name="gender" value="male"></label> <label>Female<input type="radio" name="gender" value="female"></label>
+					<br>
+					<br>
+					<span class="fieldname">Country</span> <select name="country">
+						<option>England</option>
+						<option>Ireland</option>
+						<option>Scotland</option>
+						<option>Wales</option>
+						<option>Bloody France</option>
+					</select>
+					<br>
+					<br>
+					<span class="fieldname">E-mail</span> <input type="email" name="email" placeholder="Enter E-mail...">
+					<br>
+					<br>
+					<span class="fieldname">Phone</span> <input type="phone" name="phone" placeholder="Enter Phone...">
+					<br>
+					<br>
+					<span class="fieldname">Password</span> <input type="password" name="password">
+					<br>
+					<br>
+					<span class="fieldname">Confirm Password</span> <input type="password" name="password">
+					<br>
+					<br>
+					<input type ="checkbox" name="terms" required> <span>I agree to the Terms of Use </span>
+				</div>
+			</form>
+			<div class="footer">
+				<form>
+					<input type="submit" value="Submit" class="lastbuttons">
+					<input type="button" value ="Cancel" class="lastbuttons">
+				</form>
+			</div>
+		</div>
+	</body>
+
+</html>

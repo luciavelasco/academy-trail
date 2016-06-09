@@ -1,0 +1,53 @@
+/*
+comment format
+
+selector {   --references the tag from your HTML
+	attr: property; --what we want to do
+}
+
+and id is a # and a dot [.] references a class
+*/
+
+* {     /*Apply this to EVERYTHING (using wildcard)*/
+	box-sizing: border-box;
+}
+
+body {
+	background-color: teal;
+}
+
+.title {
+	color: lightseagreen;
+}
+
+div {
+	background-color: MediumAquaMarine;
+}
+
+#container {
+	background-color: chartreuse;
+	color: teal;
+	padding: 3px;
+	width: 50%;
+	height: 200px;
+	float: right;
+}
+
+#universe {
+	font-size: 20px;
+}
+
+#header {
+	border: 2px solid chartreuse;
+	width: 50%;
+	height: 200px;
+	padding: 20px;
+	float: left;
+}
+
+/*the container is referenced as an id, there should only be one container on my page, it ALWAYS has a higher precedence at the same level
+there can be multiple classes and it should be applied lots*/
+
+
+
+

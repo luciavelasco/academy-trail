@@ -1,0 +1,57 @@
+* {
+	box-sizing: border-box;
+}
+
+span {
+	font-family: arial;
+	color: yellow;
+}
+
+.fieldname {
+/*align towards the center os something*/
+}
+
+.formselect {
+	display: inline-block;
+	background-color: #222535;
+	width: 100%;
+	padding: 5px;
+	text-align: center;
+	float: left;
+}
+
+input[type="cancel"] {
+
+}
+
+input {
+	border-radius: 5px;
+}
+
+.header {
+	background-color: #DC8622;
+	border-top-right-radius: 5px;
+	border-top-left-radius: 5px;
+	padding: 2px;
+}
+
+.footer {
+	background-color: #DC8622;
+	border-bottom-right-radius: 5px;
+	border-bottom-left-radius: 5px;
+}
+
+body > div {
+	margin: 0 auto;
+	padding: 10px;
+	width: 40%;
+}
+
+label {
+	color: yellow;
+	text-align: right;
+}
+
+.lastbuttons {
+	color: white;
+}

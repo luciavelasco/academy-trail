@@ -1,0 +1,9 @@
+<?php
+$name = $_POST['name'];
+$mssg = $_POST['mssg'];
+$email = $_POST['email'];
+var_dump($_POST);
+if (empty($name)) {
+    return $this->renderer->render($response, 'word.phtml', $args);
+}
+echo $name . ' hah lol <br>' . $mssg . ' lmao lol<br>' . "\n" . $email . ' lol damn<br>';

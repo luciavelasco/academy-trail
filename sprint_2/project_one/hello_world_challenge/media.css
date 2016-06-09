@@ -1,0 +1,50 @@
+@media (min-width: 768px) {
+	.page_fill {
+		max-width: 700px;
+	}
+	.subsec {
+		width: 100%;
+	}/*
+	.navbar {
+		max-width: 700px;
+	}*/
+	#burger {
+		display: block;
+		height: 5px;
+		width: 5px;
+		background-color: green;
+	}
+	.navbar, .navbar li {
+		display: hidden;
+	}
+	#burger:hover + .navbar{
+		display: block;
+	}
+
+}
+
+@media (min-width: 992px) {
+	.page_fill {
+		max-width: 900px;
+	}
+	.subsec {
+		width: 33.33%;
+	}
+	#burger {
+		display: hidden;
+	}
+	.navbar {
+		max-width: 900px;
+		display: block;
+	}
+	/*navbar hover dropdown with icon or something*/
+}
+
+@media (min-width: 1200px) {
+	.page_fill {
+		max-width: 1000px;
+	}
+	.navbar {
+		max-width: 1000px;
+	}
+}

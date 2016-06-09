@@ -1,0 +1,18 @@
+{
+    "name": "luciavelasco/project",
+    "authors": [
+        {
+            "name": "Lucia Velasco",
+            "email": "lucia.velasco@mayden.co.uk"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Project\\": "src/"
+        }
+    },
+    "require": {},
+    "require-dev": {
+        "crysalead/kahlan": "~1.2"
+    }
+}

@@ -1,0 +1,67 @@
+/*CSS Notes:*/
+
+/* Types of colours:
+rgb([number], [number], [number]); <--(red green blue)
+hash colours: #000000; a-f and 0-9, first two are red, second two are green and third two are blue
+#000000 black, #ffffff white, #cccccc gray, #333333 dark gray (like bottom of Sublime border), #ff0000 red, #00ff00 green
+Textual (eg red green blue) - relies on browser defaults though, some blue might be different browser to browser
+rgba (red green blue alpha)([standard] [opacity value in decimal 0-1 (zero being completely transparent)]) */
+
+/*
+opacity will make ALL child elements transparent (including like text and shizzle)
+*/
+
+/*minification: removing the whitespace (eg everything in one line) to make it faster to render,
+use https://www.cleancss.com/css-minify/ WILL REMOVE ALL OF YOUR CODE COMMENTS
+On average removes 70% of your filespace, will also shorten things like colour codes*/
+
+/*obfuscation: done to java (acts as further minification), renames variables (bad for you,
+good bc no one else can understand it) because it's source code*/
+
+/*no minification done to other things like PHP bc things...*/
+
+/*<!-- all inputs must be in the form and cannot be submitted to the server outside of the form unless you use java or summat-->
+			<!-- should always have the action attribute and the method attribute-->
+			<!-- method: specifies the http method to be submitted to the form (GET or POST)-->
+			<!--
+			<input type="text" name="username">
+			<input type="password">
+			<input type="submit" value="FlickMahButtern">
+			<br>
+			<input type="radio" name="test" value="oh my">
+			<input type="radio" name="test" value="oh you">
+			<input type="radio" name="test" value="my gosh!">
+			<br>
+			<input type="checkbox" name="waff" value="ehehe">
+			<input type="checkbox" name="waff" value="Ehehehehe">
+			<input type="checkbox" name="waff" value="EHEHEHEHEHEHE">
+			<br>
+			<input type="radio" name="t">
+			<input type="radio" name="t">
+			<input type="radio" name="t">
+			<br>
+			<input placeholder="grey text" type="text" name="user-field-two">
+			<br>
+			<input type="button" onclick="alert('HELP ME I\'M TRAPPED')" name="buzz myself" value="teatree">
+			<input type="hidden" name="oh-oh">
+			<input type="button" onclick="alert('AHHHHHH..... MY FACE!!!')">
+			<br>
+			<input type="date">
+			<input type="email"> -->
+			<!-- <input type=""> -->
+			<!--ALWAYS HAVE A NAME ATTRIBUTE!-->
+			<!--
+			<br>
+			<br>
+			<textarea name="sniggersnigger" ></textarea><br>
+			<br><br>
+			<br><br>
+			<br>
+			<select name="options">
+				<option value="1" name="option">here's a choice!</option>
+				<option value="four" name="option">here's your other choice!</option>
+				<option value="write" name="option" checked>or you could choose me right here baby</option> -->
+				<!-- having a value in your option submits a different result from the text chosen. This is immensely helpful. This is why options are not self closing-->
+				<!-- anything to be submitted needs a name -->
+				<!-- require makes the field required before submit -->
+				<!-- checked = for checkbox and radio, selected = for select options = by default select this one -->*/
